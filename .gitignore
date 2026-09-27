@@ -1,0 +1,139 @@
+# ================================
+# Unity Generated Folders
+# ================================
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Asset Store Tools generated files
+[Aa]ssets/AssetStoreTools*
+
+# ================================
+# IDE / Visual Studio / Rider
+# ================================
+
+.vs/
+.idea/
+.vscode/
+
+*.csproj
+*.sln
+*.slnx
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+
+# ================================
+# OS files
+# ================================
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ================================
+# Unity Crash / Debug
+# ================================
+
+sysinfo.txt
+*.stackdump
+
+# ================================
+# Visual Studio cache
+# ================================
+
+.vsconfig
+
+# ================================
+# JetBrains Rider
+# ================================
+
+.idea/
+*.sln.iml
+
+# ================================
+# Unity Package Manager
+# ================================
+
+# Ignore local package manager cache
+/[Pp]ackages/[Ll]ocal[Oo]verride/
+
+# ================================
+# Builds
+# ================================
+
+*.apk
+*.aab
+*.app
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# ================================
+# Addressables generated data
+# ================================
+
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/[Aa]ddressables_content_state.bin
+
+# ================================
+# Burst generated files
+# ================================
+
+[Bb]urstDebugInformation_DoNotShip/
+
+# ================================
+# Auto-generated Unity files
+# ================================
+
+/[Aa]ssets/[Tt]est[Rr]esults/
+/[Aa]ssets/[Ss]treamingAssets/[Aa]ddressables/
+
+/[Aa]ssets/[Ss]cripts/[Gg]enerated/
+
+# ================================
+# Local configuration / secrets
+# ================================
+
+.env
+.env.*
+!.env.example
+
+# ================================
+# Local server / Node
+# ================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================================
+# Python
+# ================================
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# ================================
+# Temporary / backup files
+# ================================
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*~

@@ -1,6 +1,6 @@
 {
   "name": "com.stream.webrtcstream",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "displayName": "WebRTC Stream SDK",
   "description": "Plug-and-play GPU-accelerated WebRTC video streaming for Unity. Wraps com.unity.webrtc + NativeWebSocket signaling behind a simple StartStreaming()/StopStreaming() API.",
   "unity": "2021.3",
@@ -12,7 +12,7 @@
     {
       "displayName": "Streaming Demo",
       "description": "A scene showing a streamed camera, rotate control, and telemetry wired up with GenericStreamController/GenericControlReceiver/GenericTelemetryProvider.",
-      "path": "Samples~/Streaming"
+      "path": "Samples~"
     }
   ],
   "keywords": ["webrtc", "streaming", "video", "gpu", "unity", "realtime", "sdk"],

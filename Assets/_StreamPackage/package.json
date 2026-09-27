@@ -1,5 +1,5 @@
 {
-  "name": "com.sravan.webrtcstream",
+  "name": "com.stream.webrtcstream",
   "version": "1.0.0",
   "displayName": "WebRTC Stream SDK",
   "description": "Plug-and-play GPU-accelerated WebRTC video streaming for Unity. Wraps com.unity.webrtc + NativeWebSocket signaling behind a simple StartStreaming()/StopStreaming() API.",

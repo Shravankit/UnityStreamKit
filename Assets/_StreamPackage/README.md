@@ -35,6 +35,21 @@ add them yourself through Package Manager:
 - `com.unity.webrtc` (registry package)
 - `https://github.com/endel/NativeWebSocket.git#upm` (git package)
 
+## Installation
+
+### Method 1: Add Directly to `manifest.json` (Recommended)
+
+Open your project's `Packages/manifest.json` file and add the dependencies to the `"dependencies"` block:
+
+````json
+{
+  "dependencies": {
+    "com.endel.nativewebsocket": "[https://github.com/endel/NativeWebSocket.git#upm](https://github.com/endel/NativeWebSocket.git#upm)",
+    "com.stream.webrtcstream": "[https://github.com/](https://github.com/)<you>/<repo>.git?path=/Assets/_StreamPackage#1.0.5",
+    ...
+  }
+}
+
 ## Quick Start
 
 1. Add a `StreamSDK` component to a GameObject.
@@ -46,7 +61,7 @@ add them yourself through Package Manager:
 
 ```csharp
 streamSDK.StartStreaming(myCamera);
-```
+````
 
 Subscribe to `OnConnected`, `OnDisconnected`, `OnError`, and
 `OnControlReceived` to react to session state and incoming remote

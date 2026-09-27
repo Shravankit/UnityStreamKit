@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 using NativeWebSocket;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using WebRTCStreamPackage.Runtime.SO;
 
 namespace WebRTCStreamPackage.Runtime.Internal
 {
@@ -23,9 +24,25 @@ namespace WebRTCStreamPackage.Runtime.Internal
 
         public bool IsOpen => webSocket != null && webSocket.State == WebSocketState.Open;
 
-        public IEnumerator Connect(string ip, int port)
+        /// <summary>
+        /// Connects using the resolved base URL from a StreamConfig (either its
+        /// explicit serverUrl override, or serverIP:serverPort built together) —
+        /// this is the "change it directly in the config, client just uses it"
+        /// path. "/signaling" is appended here so callers never need to know
+        /// the path.
+        /// </summary>
+        public IEnumerator Connect(StreamConfig cfg) => Connect(cfg.ResolvedUrl);
+
+        /// <summary>
+        /// Connects to an explicit base URL, e.g. "ws://192.168.1.50:3000" or
+        /// just "192.168.1.50:3000" (ws:// is added automatically if missing).
+        /// </summary>
+        public IEnumerator Connect(string baseUrl)
         {
-            webSocket = new WebSocket($"ws://{ip}:{port}/signaling");
+            string url = baseUrl.Trim().TrimEnd('/');
+            if (!url.Contains("://")) url = "ws://" + url;
+
+            webSocket = new WebSocket($"{url}/signaling");
 
             webSocket.OnOpen += () => OnOpen?.Invoke();
             webSocket.OnMessage += bytes =>
@@ -38,6 +55,7 @@ namespace WebRTCStreamPackage.Runtime.Internal
             webSocket.OnClose += _ => OnClosed?.Invoke();
 
             webSocket.Connect();
+            Debug.Log("Connected");
             yield return null;
         }
 

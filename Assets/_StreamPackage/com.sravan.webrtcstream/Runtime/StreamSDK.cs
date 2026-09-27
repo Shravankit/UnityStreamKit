@@ -205,7 +205,7 @@ namespace WebRTCStreamSDK
             _signaling.OnError += err => RaiseError(err);
             _signaling.OnClosed += () => OnDisconnected?.Invoke();
 
-            yield return _signaling.Connect(cfg.serverIP, cfg.serverPort);
+            yield return _signaling.Connect(cfg);
         }
 
         // Sends each registered provider's fields over the data channel at cfg.telemetryRateHz,

@@ -10,7 +10,7 @@ namespace WebRTCStreamPackage.Runtime.Internal
     internal class SignalingClient
     {
         public event Action OnOpen;
-        public event Action<string> OnRegister;
+        public event Action<string> OnRegistered;
         public event Action<string> OnAnswer;
         public event Action<string, string, int> OnIce;
         public event Action<string> OnError;
@@ -85,7 +85,7 @@ namespace WebRTCStreamPackage.Runtime.Internal
             switch (msg.type)
             {
                 case "registered":
-                    OnRegister?.Invoke(JsonUtility.FromJson<RegisteredMsg>(json).playerId);
+                    OnRegistered?.Invoke(JsonUtility.FromJson<RegisteredMsg>(json).playerId);
                     break;
                 case "answer":
                     OnAnswer?.Invoke(JsonUtility.FromJson<SdpMsg>(json).sdp);

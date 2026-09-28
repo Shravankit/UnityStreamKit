@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Unity.WebRTC;
 using System.Collections;
+using UnityEngine.Rendering;
 using WebRTCStreamSDK.Internal;
 using System.Collections.Generic;
 using WebRTCStreamPackage.Runtime;
@@ -22,6 +23,9 @@ namespace WebRTCStreamSDK
         public static StreamSDK Instance { get; private set; }
 
         [SerializeField] private StreamConfig config;
+
+        [Tooltip("Camera to stream when StartStreaming() is called without arguments. You can also pass a camera to StartStreaming(Camera) from code.")]
+        [SerializeField] private Camera streamCamera;
 
         public event Action OnConnected;
         public event Action OnDisconnected;
@@ -51,6 +55,11 @@ namespace WebRTCStreamSDK
         private Coroutine _webrtcUpdateRoutine;
         private Coroutine _telemetryRoutine;
 
+        // Camera actually being streamed this session, plus whatever RenderTexture it
+        // was targeting beforehand so StopStreaming can put things back the way they were.
+        private Camera _activeCamera;
+        private RenderTexture _previousTarget;
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -69,15 +78,24 @@ namespace WebRTCStreamSDK
             StopStreaming();
         }
 
+        /// <summary>
+        /// Begin streaming the camera assigned in the inspector, using the inspector-assigned config.
+        /// Safe to call from a UI button / UnityEvent.
+        /// </summary>
+        public void StartStreaming()
+        {
+            StartStreaming(streamCamera, null);
+        }
+
         /// <summary>Begin streaming the given camera. Uses the inspector-assigned config unless overrideConfig is supplied.</summary>
-        public void StartStreaming(Camera streamCamera, StreamConfig overrideConfig = null)
+        public void StartStreaming(Camera cameraToStream, StreamConfig overrideConfig = null)
         {
             if (IsStreaming)
             {
                 Debug.LogWarning("[WebRTCStreamSDK] Already streaming.");
                 return;
             }
-            if (streamCamera == null)
+            if (cameraToStream == null)
             {
                 RaiseError("No camera assigned.");
                 return;
@@ -91,7 +109,7 @@ namespace WebRTCStreamSDK
             }
 
             IsStreaming = true;
-            StartCoroutine(StreamRoutine(streamCamera, cfg));
+            StartCoroutine(StreamRoutine(cameraToStream, cfg));
         }
 
         public void StopStreaming()
@@ -100,6 +118,7 @@ namespace WebRTCStreamSDK
             IsStreaming = false;
 
             if (_webrtcUpdateRoutine != null) StopCoroutine(_webrtcUpdateRoutine);
+            _webrtcUpdateRoutine = null;
             if (_telemetryRoutine != null) StopCoroutine(_telemetryRoutine);
             _telemetryRoutine = null;
 
@@ -107,7 +126,18 @@ namespace WebRTCStreamSDK
             _session = null;
 
             _videoTrack?.Dispose();
+            _videoTrack = null;
             _mediaStream?.Dispose();
+            _mediaStream = null;
+
+            // Detach the camera BEFORE releasing the RenderTexture, otherwise the camera
+            // keeps rendering into a released RT and Unity logs errors every frame.
+            if (_activeCamera != null)
+            {
+                _activeCamera.targetTexture = _previousTarget;
+            }
+            _activeCamera = null;
+            _previousTarget = null;
 
             if (_rt != null)
             {
@@ -156,13 +186,15 @@ namespace WebRTCStreamSDK
             IsRemoteControlEnabled = enabled;
         }
 
-        private IEnumerator StreamRoutine(Camera streamCamera, StreamConfig cfg)
+        private IEnumerator StreamRoutine(Camera cameraToStream, StreamConfig cfg)
         {
             IsRemoteControlEnabled = cfg.allowRemoteControl;
 
-            _rt = new RenderTexture(cfg.captureWidth, cfg.captureHeight, 0, RenderTextureFormat.BGRA32) { antiAliasing = 2 };
-            _rt.Create();
-            streamCamera.targetTexture = _rt;
+            _activeCamera = cameraToStream;
+            _previousTarget = cameraToStream.targetTexture;
+
+            _rt = CreateStreamRenderTexture(cfg.captureWidth, cfg.captureHeight);
+            cameraToStream.targetTexture = _rt;
 
             _videoTrack = new VideoStreamTrack(_rt);
             _mediaStream = new MediaStream();
@@ -206,6 +238,29 @@ namespace WebRTCStreamSDK
             _signaling.OnClosed += () => OnDisconnected?.Invoke();
 
             yield return _signaling.Connect(cfg);
+        }
+
+        /// <summary>
+        /// Creates the capture RenderTexture in a way that works on Built-in, URP and HDRP.
+        /// GraphicsSettings.currentRenderPipeline is null on Built-in and is the URP/HDRP asset
+        /// otherwise, so no SRP assembly references are needed.
+        /// </summary>
+        private static RenderTexture CreateStreamRenderTexture(int width, int height)
+        {
+            // Format the WebRTC encoder supports on this platform/graphics API.
+            // Default read/write also keeps Linear and Gamma color spaces looking correct.
+            var format = WebRTC.GetSupportedRenderTextureFormat(SystemInfo.graphicsDeviceType);
+
+            // Built-in needs a real depth buffer or the camera has no z-test.
+            // URP/HDRP allocate their own depth, so this is harmless there.
+            var rt = new RenderTexture(width, height, 24, format);
+
+            // MSAA on the RT itself only applies to Built-in. On URP/HDRP the pipeline asset
+            // and camera settings control MSAA, and a mismatch here just causes warnings.
+            rt.antiAliasing = GraphicsSettings.currentRenderPipeline == null ? 2 : 1;
+
+            rt.Create();
+            return rt;
         }
 
         // Sends each registered provider's fields over the data channel at cfg.telemetryRateHz,

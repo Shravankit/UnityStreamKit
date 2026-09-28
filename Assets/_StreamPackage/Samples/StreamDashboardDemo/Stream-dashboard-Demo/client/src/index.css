@@ -1,0 +1,190 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #14161a;
+  color: #e6e6e6;
+}
+
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.status {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status.ok {
+  background: #133b23;
+  color: #6fdb96;
+}
+
+.status.down {
+  background: #3b1313;
+  color: #db6f6f;
+}
+
+.player-list {
+  margin-bottom: 24px;
+}
+
+.player-list h2 {
+  font-size: 1rem;
+  color: #a9adb4;
+  font-weight: 600;
+}
+
+.player-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.player-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1e2127;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.empty {
+  color: #6b6f76;
+  font-size: 0.9rem;
+}
+
+button {
+  background: #2a2f38;
+  color: #e6e6e6;
+  border: 1px solid #3a3f4a;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+button:hover {
+  background: #343a45;
+}
+
+.stream-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+.player-card {
+  background: #1a1d23;
+  border: 1px solid #2a2f38;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-card-header strong {
+  flex: 1;
+}
+
+.pill {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #2a2f38;
+  text-transform: uppercase;
+}
+
+.pill.connected {
+  background: #133b23;
+  color: #6fdb96;
+}
+
+.pill.failed,
+.pill.disconnected,
+.pill.closed {
+  background: #3b1313;
+  color: #db6f6f;
+}
+
+.pill.connecting,
+.pill.new {
+  background: #3b3313;
+  color: #dbc86f;
+}
+
+.stream-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 6px;
+}
+
+.stream-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 0.8rem;
+  color: #a9adb4;
+  font-variant-numeric: tabular-nums;
+}
+
+.telemetry table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.telemetry td {
+  padding: 3px 6px;
+  border-bottom: 1px solid #2a2f38;
+}
+
+.telemetry td:first-child {
+  color: #a9adb4;
+}
+
+.control-form {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.control-form input {
+  flex: 1;
+  min-width: 100px;
+  background: #14161a;
+  border: 1px solid #3a3f4a;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #e6e6e6;
+}

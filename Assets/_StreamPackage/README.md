@@ -14,14 +14,14 @@ telemetry and remote control channels.
 Add via Package Manager using the git URL:
 
 ```
-https://github.com/<you>/<repo>.git?path=/Assets/_StreamPackage#1.0.0
+https://github.com/Shravankit/UnityStreamKit.git?path=/Assets/_StreamPackage#1.0.0
 ```
 
 **Window > Package Manager > + > Add package from git URL**, or add the
 line directly to `Packages/manifest.json`:
 
 ```json
-"com.stream.webrtcstream": "https://github.com/<you>/<repo>.git?path=/Assets/_StreamPackage#1.0.0"
+"com.stream.webrtcstream": "https://github.com/Shravankit/UnityStreamKit.git?path=/Assets/_StreamPackage#1.0.0"
 ```
 
 ### Dependencies

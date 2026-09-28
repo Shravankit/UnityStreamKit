@@ -12,7 +12,12 @@
     {
       "displayName": "Streaming Demo",
       "description": "A scene showing a streamed camera, rotate control, and telemetry wired up with GenericStreamController/GenericControlReceiver/GenericTelemetryProvider.",
-      "path": "Samples~"
+      "path": "Samples~/StreamDemo"
+    },
+    {
+      "displayName": "Dashboard Website Demo",
+      "description": "A scene showing a streamed camera, rotate control, and telemetry wired up with GenericStreamController/GenericControlReceiver/GenericTelemetryProvider.",
+      "path": "Samples~/StreamDashboardDemo"
     }
   ],
   "keywords": ["webrtc", "streaming", "video", "gpu", "unity", "realtime", "sdk"],
